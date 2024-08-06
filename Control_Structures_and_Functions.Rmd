@@ -1,0 +1,777 @@
+---
+title: "Dekut_R"
+author: "Dave Karanja"
+date: "2024-06-13"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    toc_collapsed: true
+    theme: united
+    df_print: paged
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T, message = F, warning = F, include = T)
+
+```
+
+# **CONTROL STRUCTURES AND FUNCTIONS**
+
+# **CONTROL STRUCTURES**
+
+-   Control structures are used to determine the flow of execution of a program
+
+-   They are used in programming for decision making
+
+-   They are of 2 types:
+
+    1.  Selection statements
+    2.  Loops
+
+-   Selection statements include:
+
+    -   $if$ $statements$
+
+    -   $if$ $else$ $statements$
+
+    -   $ifelse()$ function
+
+    -   $Nested$ $if$ $else$ $statements$
+
+    -   $jump$ $statements$
+
+    -   $return$ $statements$
+
+-   There only two types of loops
+
+    -   $for$ $loops$
+
+    -   $while$ $loops$
+
+## 1. Selection Statements
+
+### $if$ $statements$
+
+They test only one condition as either $TRUE$ or $FALSE$
+
+In the event condition tested is $TRUE$ then the statements in the body of the $if$ $statement$ are executed.
+
+Otherwise the program stops
+
+**Syntax**
+
+```         
+if(condition){
+    statements
+    ....
+    ....
+}
+```
+
+[**Click here**](https://media.geeksforgeeks.org/wp-content/uploads/20200331174243/if-statement2.png) to get flowchart
+
+```{r}
+# Condition is true thus program is executed
+x<-5
+if(x>0){
+  print("Positive number")
+}
+```
+
+```{r}
+# Condition is false thus program stops
+x<- -5
+if(x>0){
+  print("Negative number")
+}
+```
+
+### $if$ $else$ $statements$
+
+It tests for one condition as either $TRUE$ or $FALSE$
+
+If condition tested is $TRUE$ then the statements in the body of the $if$ $statement$ are executed, otherwise, the statements in the body of the $else$ $statement$ are executed.
+
+Syntax
+
+```         
+if(condition){
+    statements
+    ....
+    ....
+}
+else{
+    statements
+    ....
+    ....
+}
+```
+
+[**Click here**](https://www.guru99.com/images/r_programming/032818_1241_IFELSEELIF1.png) for flowchart
+
+```{r}
+# Condition is false thus program prints "Negative number"
+x<- 1:5
+if(x>0){
+  print("Positive number")
+} else {
+  print("Negative number")
+}
+```
+
+```{r}
+x<-runif(1,0,10);x
+if(x>3){
+  y=10
+} else{
+  y=0
+  
+};print(y)
+```
+
+```         
+runif() creates random variables from the uniform distribution with parameter n, min and max
+```
+
+### $ifelse()$ function
+
+The function is used to test for conditions as $TRUE$ or $FALSE$ element wise thus making them effective to work with vectorized statements
+
+Vectorized statements are simply just a vector with at least 2 elements
+
+$if$ $statements$ and $if$ $else$ $statements$ don't test for conditions element wise unless loops are employed to enable the work on vectorized statements.
+
+You can use the $ifelse()$ function to write shorter more readable codes instead. **Syntax**
+
+```         
+ifelse(test, yes, no)
+test:   Condition
+
+yes :return values for true elements of test.
+
+no  :return values for false elements of test.
+```
+
+```{r}
+# Using if statement and for loop
+a<-c(5,7,2,9)
+for(i in seq_along(a)){
+  if(a[i]%%2==0){
+    print("Even number")
+  } else {
+    print('Odd number')
+  }
+}
+```
+
+```{r}
+# Using ifelse() function
+a<-c(5,7,2,9)
+ifelse(a%%2==0,"Even number","Odd number")
+```
+
+### $Nested$ $if$ $else$ $statements$
+
+These statements are used to test at least 2 conditions
+
+$Nested$ $if-else$ $statements$ allow for more complex decision-making in your code and are useful when you need to evaluate multiple conditions, where the outcome of one condition determines whether to proceed with another condition.
+
+For instance if current condition is $FALSE$ the next condition is tested and so on till $R$ finds a condition which is $TRUE$ and executes it
+
+```{r,eval=F}
+num_fact<-as.integer(readline(prompt="Enter a number:"))
+fact=1
+
+if(num_fact<0){
+  print("Factorial doesn't exist!!")
+}else if(num_fact==0){
+  print("Factorial of 0 is 1")
+  }else{
+  for (i in 1:num_fact){
+    fact=fact*i
+  }
+  print(paste("Factorial of",num_fact,"is",fact))
+}
+```
+
+```{r}
+# First condition is true thus its expression is executed
+x<- -1
+if(x<0){
+  print('Negative number') 
+} else if (x>0){
+  print("Positive number")
+}
+```
+
+```{r}
+# Both conditions are false thus program stops
+x<-0
+if(x<0){
+  print('Negative number')
+}else if(x>0){
+  print("Positive number")
+}
+```
+
+```{r}
+# First condition is false, R tetsts the next condtion WHich is true thus its expression is executed
+x<-1
+if(x<0){
+  print("Negative number") 
+}else if(x>0){
+  print('Positive number') 
+}
+```
+
+## 2. LOOPS
+
+Loops are used to iterate (repeat) given commands without necessarily writing codes for each commands.
+
+In loops we employ the functions $seq$\_$along()$ and $length()$ when we need to iterate through indices of objects.
+
+The functions are very useful when dealing with strings.
+
+Knowledge in indexing is of essence when using the functions in loops.
+
+Unlike $length()$, $seq$\_$along()$ does not consider empty $null$ values as elements and thus does not give them an index position thus making it more effective.
+
+When $seq$\_$along$ finds an empty element it stops the looping process.
+
+However it can't be used in $while$ loops
+
+### $For$ Loops
+
+They perform a finite number of iterations on given commands or operations.
+
+**Syntax**
+
+```         
+for(value in vector){
+    statements
+    ....
+    ....
+}
+
+value: A variable assigned each element of an object in each iteration
+```
+
+[**Click here**](https://media.geeksforgeeks.org/wp-content/uploads/20200327192448/for_flowdiagram.png) *to access flowchart*
+
+Here are some few examples on for loops
+
+```{r,1}
+# for loop without seq_along() or length() functions
+x <- 6:10
+total <- 0
+for (i in x) total = total + i
+total
+```
+
+```{r,2}
+# for loop with seq_along() fucntion
+x<-6:10
+total<-0
+for(i in seq_along(x)) total=total +x[i]
+total
+```
+
+```{r,3}
+x<-c("foo","bar","baz")
+for(i in seq_along(x)){
+  print(i)
+  print(x[i])
+}
+```
+
+```{r}
+#fibonacci sequence
+fib<-c(1,1)
+for(i in 1:10){
+  fib<-c(fib,fib[i]+fib[i+1])
+
+}
+fib
+```
+
+#### Nested $for$ loops
+
+A nested loop is a loop that is within another loop
+
+```{r,4}
+for(i in 1:3){
+  for(j in 1:2){
+    print(c(i,j))
+  }
+}
+```
+
+**Explanation of chunk above:**
+
+An outer loop is created that iterates through the values 1,2,3 and assigns them to the variable $i$
+
+For each value assigned to $i$ an inner loop is created that iterates through the values 1,2 and assigns them to a variable $j$\
+The concatenation function $c()$ combines i and j as vectors
+
+```{r}
+m<-matrix(2:15,nrow=2);m
+for(r in 1:nrow(m) ){
+  for(c in 1:ncol(m)){
+    print(m[r,c])
+  }
+}
+```
+
+### $while$ loops
+
+They are used to iterate through commands until a certain condition is met.
+
+It's used when one is unsure of the number of iterations they want to perform.
+
+The loop runs until the condition tested is FALSE
+
+While loops must have an iteration function
+
+**Syntax**
+
+```         
+while(condition){
+    statement
+    ....
+    ....
+}
+```
+
+[**Click here**](https://media.geeksforgeeks.org/wp-content/uploads/20200327192542/while_flowdiagram.png) for flowchart
+
+Disclaimer: If one does not define their conditions correctly, it may lead to infinite loops.
+
+```{r}
+x<-2:20
+s=0
+i=1
+while(i<=length(x)){
+  y=x[i]
+  i=i+1
+  s=s+y
+  print(s)
+}
+```
+
+```{r}
+x<-letters[4:10]
+i=1
+while(i<=length(x)){
+  y=x[i]
+  i=i+1
+  print(y)
+}
+```
+
+```{r}
+fib<-c(1,1)
+i=0
+while(i<=10){
+  fib=c(fib,fib[i]+fib[i+1])
+  i=i+1
+}
+fib
+```
+
+### $jump$ $statements$
+
+Jump statements are used to terminate loops at a particular iteration or skip a particular iteration in the loop
+
+These statements include:
+
+-   Break statement
+
+-   Next statement
+
+Jump statements require a defined condition to tell them when to terminate or skip a particular iteration
+
+#### $break$ $Statements$
+
+It is used to terminate a loop at a particular iteration.
+
+After termination the program continues with the next statements outside the loop **Syntax**
+
+```         
+if (condition) {
+break
+}
+```
+
+[**Click here**](https://media.geeksforgeeks.org/wp-content/uploads/20191120193634/Break-statement-python.jpg) for flowchart
+
+```{r}
+
+for (i in c(3, 6, 23, 19, 0, 21))
+{
+	if (i == 0)
+	{
+		break
+	}
+print(i)
+}
+print("Outside Loop")
+
+```
+
+#### $next$ $statement$
+
+It discontinues a particular iteration and jump to the next iteration. **Syntax**
+
+```         
+if (ondition) 
+{
+    next
+}
+```
+
+```{r}
+
+for (i in c(3, 6, 23, 19, 0, 21))
+{
+	if (i == 0)
+	{
+		next
+	}
+	print(i)
+}
+print('Outside Loop')
+
+```
+
+### $repeat$ $statement$
+
+Just like the $while$ $loop$ the $repeat$ $statement$ is used to iterate through commands when there's uncertainty of the number of times repetition should be done.
+
+But unlike the while loop, it does not have a condition to be satisfied in order to terminate the loop.
+
+Instead it employs the $break$ $statement$ termination of the loop is required
+
+**Syntax**
+
+```         
+repeat { 
+   statements
+   ....
+   .... 
+   if(condition) {
+      break
+   }
+}
+```
+
+[**Click here**](https://media.geeksforgeeks.org/wp-content/uploads/20200327192638/repeat_flowdiagram.png) for flowchart
+
+```{r}
+x=0
+cat("Odd numbers:","\n")
+repeat{
+  x=x+1
+  if(x%%2==0){next}
+  if(x>10) {break}
+  cat(x);cat(" ")
+  };cat("\n")
+```
+
+# **Functions**
+
+A function is a predetermined formula that takes inputs and gives output. $f(x)$=x^2^
+
+A formula is a mathematical expression that shows the relationship between variables. $A$= πr^2^
+
+$R$ is a functional language.
+
+Thus it's better to use recursive functions rather than loops.
+
+Functions are of two types:
+
+-   In built functions
+
+    -   They are already defined in $R$
+
+-   User defined Functions
+
+    -   They are defined and declared by the user.
+
+## In Built Functions
+
+### The $apply$ family
+
+The apply functions are used to apply functions to objects and they include:
+
+-   $apply()$
+
+-   $lapply()$
+
+-   $sapply()$
+
+-   $vapply$
+
+#### 1. $apply()$
+
+Maps functions to objects that are 2 dimensional
+
+Best explained by a matrix
+
+**syntax**
+
+```         
+apply(X, MARGIN, FUN)
+X:object
+margin : 1 rep row, 2 rep column
+FUN: Function to be mapped
+```
+
+```{r}
+m <- matrix(1:9, nrow = 3, byrow = TRUE);m
+print(m)
+#Apply sum function to each row
+(row_sums <- apply(m, 1, sum))
+print(row_sums)
+# Apply sum function to each column
+col_sums <- apply(m, 2, sum)
+print(col_sums)
+```
+
+#### 2. $lapply()$
+
+Maps functions to list.
+
+-   It takes a list as input and returns a list as an output
+
+**Syntax**
+
+```         
+lapply(X, FUN, ...)
+```
+
+```{r}
+(l<-list(1,2,3))
+lapply(l,function(x) x^2)
+```
+
+**NB: If elements of list are named, the function mapped is not applied to this names**
+
+```{r}
+(l<-list(a=1,b=2,c=3))
+lapply(l,function(x)x^2)
+```
+
+-   If given any other object ie: a vector as its data, it will still output a list
+
+```{r}
+lapply(1:3,function(x)x^2)
+```
+
+-   If elements of the list are more complex than a single number, the function is still applied to the element of each list
+
+```{r}
+k<-list(a=1:3,b=4:6)
+lapply(k,function(x)x^2)
+```
+
+#### 3. $sapply$
+
+It maps functions to a given object and ttys to determine the best output to return, either, a vector, list, matrix, e.t.c
+
+Often it returns a vector but if it fails to determine output it returns a list
+
+```{r}
+sapply(1:3, function(x)x^2)
+
+sapply(k, function(x)x**2)
+```
+
+```{r}
+sample_data<- data.frame( x=c(1,2,3,4,5,6), 
+                          y=c(3,2,4,2,34,5)) 
+sapply(sample_data, max) 
+```
+
+```{r}
+m_v <- c(1, 2, 3, 4, 5)
+sapply(m_v, function(x) if (x %% 2 == 0) c(x, x^2) else c(x))
+```
+
+```         
+Because output of chunk bove have different lengths, sapply() returns the outputs as a list
+```
+
+#### 4. $vapply()$
+
+## User Defined Functions
+
+**Syntax**
+
+```         
+function_name = function(arg_1, arg_2, …) 
+{ 
+Function body 
+} 
+
+function_name(arg_1, arg_2, …)
+
+function_name: Name of function that is saved as an object in the R enviroment
+
+arg_1,arg_2, ... : They are arguments of the function which are simply placeholders(Rep input function takes when called)
+
+Function body: Contains statment that define what function does
+
+function_name(arg_1, arg_2, …):Refers to calling the function for execution.
+```
+
+#### Various ways of calling functions
+
+1.  **Using position and name of argument**
+
+Here, the order of arrangement of function matters as it determines which argument gets to be assigned which value
+
+```{r}
+div<-function(x,y){
+  print(paste(x,"/",y,"is",x/y))
+  x/y
+}
+div(6,2)
+div(2,6)
+```
+
+To avoid following the order of arguments when calling a function we can define the values of the arguments when calling it.
+
+This is only possible for named arguments
+
+```{r}
+div(y=2,x=6)
+```
+
+2.  **Calling functions without arguments**
+
+In order to do this, no arguments are defined when declaring a function
+
+```{r}
+no_arg<-function(){
+  for(i in 1:5){
+    return(i^3)
+  }
+}
+no_arg()
+```
+
+3.  **Calling functions with Default Arguments**
+
+Here, the values of arguments are defined when declaring the function
+
+This enables calling of the argument without arguments
+
+It also enables one call an argument with arguments by defining its values during the call. This overwrites values of argument defined during declaration
+
+```{r}
+roots<-function(a=1,b=-3,c=2){
+  r_1 = (-b-sqrt(b^2-4*a*c))/2
+  r_2 = (-b+sqrt(b^2-4*a*c))/2
+  if(r_1&r_2<0){
+    r = -b/(2*a)
+    return(c(r,r))
+  }else if(r_1&r_2==0){
+    return(0)
+  }else{
+    
+    return(c(r_1,r_2))
+  }
+}
+roots()
+roots(a=1,b=-2,c=1)
+```
+
+#### Lazy Evaluation of Functions
+
+This simply implies that arguments of a function are evaluated when need arises to
+
+```{r}
+f<-function(x,y=x^2) {
+  1+x
+}
+f(2)
+```
+
+```         
+In the hunk above, arg y is not evaluated as its not needed. It will only be evaluated when need arises. Check next Chunk
+```
+
+```{r}
+f<-function(x,y=x^2) {
+  y+x
+}
+f(2)
+```
+
+Lazy evaluation allows for creation of functions that have default arguments which are dependent on other arguments defined in the function
+
+### Types of Functions
+
+#### Recursive Functions
+
+These are functions that call themselves.
+
+When the function is called it calls itself again and again and in the process it breaks down a given problem into small finite sizes
+
+This leads to formation of a loop
+
+Recursive functions break down a problem into small bits then merge the output of the small bits to give output of the parent problem
+
+```{r}
+a<-function(k){
+  if(k>0){
+    result=k+a(k-1)
+    print(result)
+  } else{
+    result=0
+    return(result)
+  }
+}
+a(6)
+```
+
+The chunk above works as a loop and the table below shows its break down
+
+| a(k) | Condition | result  | print(result) |
+|:----:|:---------:|:-------:|:-------------:|
+| a(6) |   TRUE    | 6+a(5)= |    6+15=21    |
+| a(5) |   TRUE    | 5+a(4)= |    5+10=15    |
+| a(4) |   TRUE    | 4+a(3)= |    4+6=10     |
+| a(3) |   TRUE    | 3+a(2)= |     3+3=6     |
+| a(2) |   TRUE    | 2+a(1)= |     2+1=3     |
+| a(1) |   TRUE    | 1+a(0)= |     1+0=1     |
+| a(0) |   FALSE   |   0=    |       0       |
+
+1^st^ 3 cols are filled row-wise and the last col filled column wise
+
+Here's a Fibonacci sequence using recursive functions
+
+```{r}
+fib_recursive <- function(n) {
+  if(n == 1) {
+    return(1)
+  } else if(n == 2) {
+    return(c(1, 1))
+  } else {
+    previous_fib <- fib_recursive(n - 1)
+    return(c(previous_fib, sum(tail(previous_fib, 2))))
+  }
+}
+fib_recursive(10)
+```
+
+#### Scoping
+
+#### Closures
+
+$This$ $is$ $the$ $furthest$ $we$ $can$ $get$ $with$ $functions$ $for$ $today!!!$
+
+$As$ $I$ $wish$ $you$ $all$ $the$ $best$ $in$ $your$ $journey$ $in$ $R,$ $I$ $want$ $to$ $thank$ $you$ $for$ $your$ $attendance,$ $patience$ $and$ $attention$ $throughout$ $the$ $session.$
