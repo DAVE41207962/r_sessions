@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = T, message = F, warning = F, include = T)
 
 # **CONTROL STRUCTURES AND FUNCTIONS**
 
-# **CONTROL-STRUCTURES**
+# **CONTROL STRUCTURES**
 
 -   Control structures are used to determine the flow of execution of a program
 
